@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+h1 {
+ text-align: center;
+ font-size: 35px;
+}
+@font-face { 
+  font-family: GoogleFont; src: url('GoogleSans-Regular.ttf'); 
+}
+.img-hor {
+  transform: rotateY(180deg); // Rotate 180 degrees along the y-axis
+}
+#line p {
+vertical-align: middle;
+}
+div {
+line-height: 18px;
+}
+.button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 30px 65px;
+  text-decoration: none;
+  font-size: 35px;
+  margin: 2px 2px;
+  cursor: pointer;
+  font-family: GoogleFont;
+  pointer-events: none;
+}
+body {
+  font-family: GoogleFont;
+  color: white;
+  background-color: #292828;
+  background-repeat: repeat;
+  font-size: 25px;
+  text-align: center
+}
+img {
+  max-width: 500px;
+  max-height: 250px;
+}
+
+.setwidth {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+	
+}
+.spatiere {
+  margin-top:20px;
+}
+@media screen and (max-width: 992px) {
+  img {
+   width: 100%;
+  }
+  span {
+   font-size: 35px;
+  }
+}
+</style>
+
+
+<h1 id = "begin">Click on the soldier to "shoot"!</h1>
+
+<div style="text-align:center;"><span id="livesleft">Lives left: 3</span></div><br>
+<div id="twoimages">
+	<div class ="setwidth">
+		<button id = "buttonkill" onclick="damageCount();"><img class = "img-hor logo childwidth" src ="https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2018/08/11175016/68c890e9-7579-48ac-8d6c-db47d294776d.jpg"></button>
+		<button onclick="damageCount();" disabled><img class = "logo childwidth" src ="https://www.lowyat.net/wp-content/uploads/2016/06/csgo-screenshot-16-770x437.jpg"></button><br>
+	</div>
+	<div style="text-align:center;" class = "spatiere"><span id="target">Start!</span></div><br>
+	<button id = "butondamage" class = "button logo" onclick="damageCount();" disabled><span id="count">HP: 100</span></button><br><br>
+</div>
+
+
+
+
+
+<div style="text-align:center;"><span id="killstatus">Enemies killed: 0</span></div><br>
+<div style="text-align:center;"><span id="final"></span></div><br>
+<div style="text-align:center;"><span id="roundswon"></span></div><br>
+
+
+<script>
+var target = document.getElementById('target');
+var shot = [
+  'Shot missed.',
+  'Shot landed, -34HP',
+  'Shot landed, -33HP',
+  'Shot landed, -32HP',
+  'Shot landed, -31HP',
+  'Shot landed, -30HP',
+  'Shot landed, -29HP',
+  'Shot landed, -28HP',
+  'Shot missed.',
+  'Shot missed.',
+  'Shot missed.'
+  ];
+  var damage, count, missed, enemy, rounds, verify, lives;
+  count = missed = enemy = rounds = verify = 0;
+  lives = 3;
+  damage = 100;
+ 
+  function damageCount() {
+  document.getElementById("butondamage").style.backgroundColor = "#008CBA";
+  var i = (Math.random() * shot.length) | 0;
+  target.innerText = shot[i];
+ if (i == 0) {
+		missed++;
+		verify++;
+		damage -= 0;
+ } else if(i == 1) {
+		count++;
+		verify++;
+		damage -= 34;
+ } else if(i == 2) {
+		count++;
+		verify++;
+		damage -= 33;
+ } else if(i == 3) {
+		count++;
+		verify++;
+		damage -= 32;
+ } else if(i == 4) {
+		count++;
+		verify++;
+		damage -= 31;
+ } else if(i == 5) {
+		count++;
+		verify++;
+		damage -= 30;
+ } else if(i == 6) {
+		count++;
+		verify++;
+		damage -= 29;
+ } else if(i == 7) {
+		count++;
+		verify++;
+		damage -= 28;
+ } else if(i == 8) {
+		missed++;
+		verify++;
+		damage -= 0;
+ } else if(i == 9) {
+		missed++;
+		verify++;
+		damage -= 0;
+ } else if(i == 10) {
+		missed++;
+		verify++;
+		damage -= 0;
+ } else {
+		count++;
+		verify++;
+		damage -= 0;
+ }
+ 
+ if(verify == 1) {
+    target.innerText = 'Start!' ;
+	damage = 100;
+	count = 0;
+	missed = 0;
+	final.innerHTML = " ";
+}
+ if (enemy == 0 && damage > 0) {
+		killstatus.innerText = "Enemies killed: 0";
+	}
+butondamage.innerText  = "HP: " + damage;
+ if (missed == 3) {
+	target.innerText = 'You died! Click on the soldier to start again.' ;
+	document.getElementById("butondamage").style.backgroundColor = "#f44336";
+	butondamage.innerText  = ":c";
+	enemy = 0; rounds = 0;
+	damage = 100;
+	missed = 0;
+	lives--;
+	livesleft.innerText  = "Lives left: " + lives;
+	if (lives == 0) {
+		buttonkill.disabled = "true";
+		target.innerText = 'You lost! Refresh the page to try again.' ;
+		document.getElementById("butondamage").style.backgroundColor = "#ebc907";
+		butondamage.innerText  = "Come play again!";
+		document.getElementById("butondamage").style.color = "black";
+	}
+ }
+ if (damage <= 0) {
+ 	enemy++;
+	killstatus.innerHTML = 'Enemies killed: ' + enemy;
+	target.innerText = 'Click again on the soldier to refresh.' ;
+	butondamage.innerHTML  = "HP: 0"  + "<br>Enemy down.";
+	document.getElementById("butondamage").style.backgroundColor = "#4CAF50";
+	final.innerHTML = "Enemy killed with " + count + ' shots landed and ' + missed + ' shots missed.';
+	damage = 100;
+	count = 0;
+	missed = 0;
+	verify = 0;
+	if (enemy == 5) {
+		enemy = 0;
+		killstatus.innerText = "All 5 enemies killed. Counter-Terrorists Win!";
+		rounds++;
+		roundswon.innerText = "Rounds won: " + rounds;
+	}
+	
+}
+
+}
+butondamage.onclick = function(){damageCount()};
+</script>
+
+</body>
+</html>
